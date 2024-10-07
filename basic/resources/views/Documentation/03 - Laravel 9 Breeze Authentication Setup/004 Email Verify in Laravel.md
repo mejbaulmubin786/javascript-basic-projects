@@ -11,6 +11,15 @@ Route::get('/dashboard', function () {
 `web.php` তে ডিক্লেয়ার করা হয়েছে ( `middleware(['auth', 'verified'])->name('dashboard');` তবে বর্তমানে এই অংশটি অটো হয়ে থাকে ), এবং আমরা এটিকে `verified` নামে অ্যাড করবো । তারপর আমাদের মডেল আপডেট করতে হবে। যদি তুমি `User` মডেলে যাও, সেখানে ডিফল্টভাবে `MustVerifyEmail` ( যেটা হচ্ছে `use Illuminate\Contracts\Auth\MustVerifyEmail;` তবে বর্তমানে এটি কমেন্ট করা থাকে তাই এর সামনে থেকে // উঠাতে হবে মানে কমেন্ট আউট করতে হবে। ) নামে একটি ইন্টারফেস ইমপ্লিমেন্ট করা হয়েছে। আমরা এটি আমাদের `User` মডেলে ইমপ্লিমেন্ট করবো।
 
 ```php
+<?php
+
+namespace App\Models;
+
+//use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -19,7 +28,17 @@ class User extends Authenticatable
 এভাবে হবে।
 
 ```php
-class User extends Authenticatable implements
+<?php
+
+namespace App\Models;
+
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 ```
